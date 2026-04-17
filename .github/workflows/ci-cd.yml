@@ -1,0 +1,19 @@
+name: Intermediate DevOps Pipeline
+
+on: [push]
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Escaneo de vulnerabilidades en el código (SCA)
+      - name: Snyk Security Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      # Escaneo de la imagen Docker
+      - name: Docker Lint
+        run: docker run --rm -i hadolint/hadolint < Dockerfile

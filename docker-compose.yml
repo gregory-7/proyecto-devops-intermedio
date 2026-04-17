@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api-service:
+    build: ./api
+    container_name: api_contenedor
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URL=mongodb://root:password123@db-service:27017/mi_proyecto?authSource=admin
+    depends_on:
+      - db-service
+    networks:
+      - red-devops
+
+  db-service:
+    image: mongo:latest
+    container_name: db_contenedor
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - red-devops
+
+networks:
+  red-devops:
+    driver: bridge
+
+volumes:
+  mongodb_data:

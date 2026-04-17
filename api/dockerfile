@@ -1,0 +1,24 @@
+# 1. Usar imagen base ligera para mayor seguridad
+FROM node:18-alpine
+
+# 2. Crear directorio de trabajo
+WORKDIR /usr/src/app
+
+# 3. Copiar archivos de dependencias primero (Optimización de caché de capas)
+COPY package*.json ./
+
+# 4. Instalar solo dependencias de producción para reducir vulnerabilidades
+RUN npm install --only=production
+
+# 5. Copiar el resto del código
+COPY . .
+
+# 6. Crear un usuario no-root por seguridad (Buenas prácticas de seguridad operativa)
+# Por defecto Node corre como root, lo cual es un riesgo.
+USER node
+
+# 7. Exponer el puerto de la API
+EXPOSE 3000
+
+# 8. Comando para arrancar la aplicación
+CMD ["npm", "start"]
