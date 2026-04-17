@@ -24,6 +24,7 @@ app.get('/api/data', (req, res) => {
 });
 
 mongoose.connect(DB_URL)
+
     .then(() => {
         console.log("Conexión exitosa a MongoDB");
         app.listen(PORT, () => console.log(`API corriendo en puerto ${PORT}`));

@@ -12,8 +12,9 @@ jobs:
       - name: Snyk Security Scan
         uses: snyk/actions/node@master
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Esto llama al secreto que creaste
+        with:
+          args: --severity-threshold=high
       # Escaneo de la imagen Docker
       - name: Docker Lint
         run: docker run --rm -i hadolint/hadolint < Dockerfile
